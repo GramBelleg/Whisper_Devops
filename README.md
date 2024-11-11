@@ -34,6 +34,7 @@ This project is fully containerized using Docker, with Docker Compose simplifyin
 
 - **Frontend**: Handles the user interface and client-side logic.
 - **Backend**: To Manages the server-side logic and database interactions.
+- **Jenkins**: Manages the continuous integration and continuous deployment (CICD) process.
 
 All these images are pushed to Docker Hub for easy access and deployment. You can find them here:[go to dockerhub](https://hub.docker.com/u/grambell003).
 
