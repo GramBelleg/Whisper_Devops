@@ -71,7 +71,7 @@ both the frontend and backend have two scripts for deployment:
 - `Deploy Script`: This script runs on the Jenkins machine and SSHs into the application server.
 - `Remote Deploy Script`: This script runs on the application server to pull the updated image and restart the service.
 
-### References:
+## References:
 
 For Jenkins with Docker, the Dockerfile found on the [official Jenkins Docker installation documentation](https://www.jenkins.io/doc/book/installing/docker/) is used to build the Jenkins Docker image.
 
