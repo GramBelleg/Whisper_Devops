@@ -13,11 +13,12 @@
 
 ## Introduction
 
-The application is deployed on [whisper.webredirect.org](https://whisper.webredirect.org/). NOTE: this is a sample application and it is not done yet.
-You can find my work on the front end and back end in the respective repositories and branches.
+The application is deployed on [whisper.webredirect.org](https://whisper.webredirect.org/). <br>
+NOTE: this is a sample application and it is not done yet.<br>
+You can find the work on the front end and back end in the respective repositories and branches.
 
-- **Front End**: [Front End Repository](https://github.com/GramBelleg/Whisper_FrontEnd) - Branch: `frontend-branch`
-- **Back End**: [Back End Repository](https://github.com/GramBelleg/Whisper_BackEnd.git) - Branch: `backend-branch`
+- **Front End**: [Front End Repository](https://github.com/GramBelleg/Whisper_FrontEnd) - Branch: `production`
+- **Back End**: [Back End Repository](https://github.com/GramBelleg/Whisper_BackEnd.git) - Branch: `Production`
 
 ## Cloud Providers
 
