@@ -13,5 +13,7 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-c
 
 RUN chmod +x /usr/local/bin/docker-compose
 
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
