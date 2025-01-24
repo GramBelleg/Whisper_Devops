@@ -1,83 +1,104 @@
 # Table of Contents
 
-1. [Introduction](#introduction)
-2. [Cloud Providers](#cloud-providers)
-3. [Dockerizing Application](#dockerizing-application)
-    - [Built Images](#built-images)
-    - [Running Containers on Server](#running-containers-on-server)
-    - [Docker Commands](#docker-commands)
-4. [Jenkins CICD](#jenkins-cicd)
-    - [Workflow for Frontend and Backend](#workflow-for-frontend-and-backend)
-    - [Deploying the Application for Frontend and Backend](#deploying-the-application-for-frontend-and-backend)
-5. [References](#references)
+1. [📌 Introduction](#introduction)  
+2. [☁️ Cloud Providers](#cloud-providers)  
+3. [🐳 Dockerizing Application](#dockerizing-application)  
+    - [🖼️ Built Images](#built-images)  
+    - [🚀 Running Containers on Server](#running-containers-on-server)  
+4. [🌐 NGINX Configuration](#nginx-configuration)  
+5. [⚙️ Jenkins CI/CD](#jenkins-cicd)  
+    - [🔁 Workflow for Frontend and Backend](#workflow-for-frontend-and-backend)  
+    - [🚀 Deploying the Application for Frontend and Backend](#deploying-the-application-for-frontend-and-backend)  
 
-## Introduction
+---
 
-The application is deployed on [whisper.webredirect.org](https://whisper.webredirect.org/). <br>
-NOTE: this is a sample application and it is not done yet.<br>
-You can find the work on the front end and back end in the respective repositories and branches.
+## 📌 Introduction
 
-- **Front End**: [Front End Repository](https://github.com/GramBelleg/Whisper_FrontEnd) - Branch: `production`
-- **Back End**: [Back End Repository](https://github.com/GramBelleg/Whisper_BackEnd.git) - Branch: `Production`
+The application is deployed on [whisper.webredirect.org](https://whisper.webredirect.org/).  
 
-## Cloud Providers
+**Note:** The application server is currently turned off.  
 
-The application utilizes two Azure VMs:
-- One dedicated to the application.
-- One dedicated to Jenkins for continuous integration and continuous deployment (CICD).
+You can find the work on the front end and back end in the respective repositories and branches:  
 
-## Dockerizing Application
+- **Front End**:  
+  - Repository: [Front End Repository](https://github.com/GramBelleg/Whisper_FrontEnd)  
+  - Branch: `production`  
+
+- **Back End**:  
+  - Repository: [Back End Repository](https://github.com/GramBelleg/Whisper_BackEnd.git)  
+  - Branch: `production`  
+
+**Note:** The files in this repository are the same as those in the other repositories. They are included here for easy access.
+
+---
+
+## ☁️ Cloud Providers
+
+The application utilizes two Azure VMs:  
+- One dedicated to the application.  
+- One dedicated to Jenkins for continuous integration and continuous deployment (CI/CD).  
+
+---
+
+## 🐳 Dockerizing Application
 
 This project is fully containerized using Docker, with Docker Compose simplifying the deployment process.
 
-### Built Images
+### 🖼️ Built Images
 
-- **Frontend**: Handles the user interface and client-side logic.
-- **Backend**: To Manages the server-side logic and database interactions.
-- **Jenkins**: Manages the continuous integration and continuous deployment (CICD) process.
+- **Frontend**: Handles the user interface and client-side logic.  
+- **Backend**: Manages the server-side logic and database interactions.  
+- **Jenkins**: Manages the continuous integration and continuous deployment (CI/CD) process.  
 
-All these images are pushed to Docker Hub for easy access and deployment. You can find them here:[go to dockerhub](https://hub.docker.com/u/grambell003).
+All these images are pushed to Docker Hub for easy access and deployment. You can find them here: [Docker Hub](https://hub.docker.com/u/grambell003).  
 
+### 🚀 Running Containers on Server
 
-### Running Containers on Server
+Below is the list of containers running on the application server:  
 
-Below is the list of containers running on the application server:
+- **Frontend**: The built image for handling the user interface and client-side logic.  
+- **Backend**: The built image for managing server-side logic and database interactions.  
+- **Redis**: Utilized for caching to enhance application performance.  
+- **Fluentd**: Responsible for collecting and managing logs.  
 
-- **Frontend**: The built image for handling the user interface and client-side logic.
-- **Backend**: The built image for managing server-side logic and database interactions.
-- **Redis**: Utilized for caching to enhance application performance.
+Below is the list of containers running on the Jenkins server:  
 
-Below is the list of containers running on the jenkins server:
+- **Jenkins**: The built image for handling the CI/CD process.  
 
-- **jenkins**:The built image for handling CICD process.
+---
 
-### Docker Commands
+## 🌐 NGINX Configuration
 
-To build, run, and push the Docker images for the services, use the following commands:
+NGINX acts as a reverse proxy and web server for the application. It handles incoming requests and routes them as follows:  
+- Requests starting with `/api` or `/socket.io` are routed to the **backend container**.  
+- All other requests are served by the **frontend container**.  
 
-- **Build**: `docker-compose build <service>`
-- **Run**: `docker-compose run <service>`
-- **Push**: `docker-compose push <service>`
+This setup ensures seamless communication between the frontend and backend while serving static assets efficiently.
 
-## Jenkins CICD
+---
 
-### Workflow for Frontend and Backend
+## ⚙️ Jenkins CI/CD
 
-1. A pull request to request merging on the production branch will trigger the workflow that will build the application and run tests.
-2. Upon merging the pull request into the production branch, the pipeline pushes the updated application image to Docker Hub and triggers a deployment script, which deploys the new image to the application server.
+### 🔁 Workflow for Frontend and Backend
 
-### Deploying the Application for Frontend and Backend
+1. **Pull Request Creation**:  
+   - A pull request is created to merge changes into the `production` branch.  
+   - This triggers a workflow that builds the application and runs automated tests to ensure functionality and stability.  
 
-both the frontend and backend have two scripts for deployment:
+   ![image](https://github.com/user-attachments/assets/2d0dc4c6-7781-4aaf-acdb-7e49a0fbc31a)  
 
-- `Deploy Script`: This script runs on the Jenkins machine and SSHs into the application server.
-- `Remote Deploy Script`: This script runs on the application server to pull the updated image and restart the service.
+2. **Merge and Deployment**:  
+   - Once the pull request is approved and merged into the `production` branch:  
+     - The pipeline pushes the updated application image to Docker Hub.  
+     - A deployment script is triggered, which deploys the new image to the application server.  
 
-## References:
+   ![image](https://github.com/user-attachments/assets/60ed01fc-b834-4d86-99e4-493fb0b165b6)  
 
-For Jenkins with Docker, the Dockerfile found on the [official Jenkins Docker installation documentation](https://www.jenkins.io/doc/book/installing/docker/) is used to build the Jenkins Docker image.
+### 🚀 Deploying the Application for Frontend and Backend
 
-For detailed instructions on installing Docker and Docker Compose, refered to this [guide](https://support.netfoundry.io/hc/en-us/articles/360057865692-Installing-Docker-and-docker-compose-for-Ubuntu-20-04).
+Both the frontend and backend have two scripts for deployment:  
 
-To configure NGINX with SSL and set up Certbot for obtaining certificates, we used this [repository](https://github.com/dimzrio/docker-compose/tree/master/nginx-ssl-letsencrypted) as a reference guide.
+- **Deploy Script**: This script runs on the Jenkins machine and SSHs into the application server.  
+- **Remote Deploy Script**: This script runs on the application server to pull the updated image and restart the service.  
 
+---
