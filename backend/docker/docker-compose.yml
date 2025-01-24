@@ -1,0 +1,53 @@
+version: "3.7"
+services:
+    backend:
+        container_name: whisperBackend
+        image: grambell003/whisperbackend:v1
+        build: .
+        ports:
+            - "5000:5000"
+        restart: always
+        env_file:
+            - .env
+        networks:
+            - whisperNet
+        depends_on:
+            - redis
+            - fluentd
+        logging:
+            driver: fluentd
+
+    redis:
+        image: "redis:alpine"
+        container_name: Redis
+        ports:
+            - "6379:6379"
+        volumes:
+            - redis-data:/data
+            - ./redis.conf:/usr/local/etc/redis/redis.conf
+        command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+        networks:
+            - whisperNet
+        depends_on:
+            - fluentd
+    
+    fluentd:
+        image: fluent/fluentd:v1.11.2-1.0
+        container_name: Fluentd
+        user: root
+        ports:
+            - "24224:24224"
+        volumes:
+            - /var/lib/docker/containers:/fluentd/log/containers
+            - ./configurations/fluent.conf:/fluentd/etc/fluent.conf
+            - ./logs:/output
+        networks:
+            - whisperNet
+
+
+networks:
+    whisperNet:
+        external: true
+
+volumes:
+    redis-data:
